@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>시황 상세 | K-마켓 브리핑</title>
+  <meta name="description" content="코스피·코스닥 지수 추이, 업종별 등락률, 투자자별 순매수 동향">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%231f3a68%27/%3E%3Cpath d=%27M6 22l6-7 5 4 9-11%27 stroke=%27%23ff5c6c%27 stroke-width=%273%27 fill=%27none%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="notice-bar">이 사이트의 시세·수치는 화면 구성을 위한 <strong>예시 데이터</strong>이며 실제 시세가 아닙니다. 투자 판단의 근거로 사용하지 마세요.</div>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true">K</span>K-마켓 브리핑</a>
+      <nav aria-label="주 메뉴">
+        <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+        <ul class="nav-list">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="market.html" aria-current="page">시황 상세</a></li>
+          <li><a href="guide.html">시장 가이드</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="status-bar" role="status" aria-live="off">
+    <div class="container">
+      <span id="market-pill" class="status-pill">확인 중</span>
+      <span id="market-clock" class="num"></span>
+      <span id="market-meta" class="status-meta"></span>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero hero-small" style="background-image: url('images/chart-candle.jpg');">
+      <div class="container">
+        <div class="hero-eyebrow">시황 상세</div>
+        <h1>지수 · 업종 · 수급 동향</h1>
+        <p>최근 20거래일 지수 흐름과 오늘의 업종별 등락, 투자자별 매매 동향을 확인하세요.</p>
+      </div>
+      <span class="photo-credit">Photo: <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></span>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="range-row">
+          <div class="tabs" role="tablist" aria-label="시장 선택">
+            <button class="tab" role="tab" data-market="KOSPI" aria-selected="true">코스피</button>
+            <button class="tab" role="tab" data-market="KOSDAQ" aria-selected="false">코스닥</button>
+          </div>
+          <span class="status-meta" data-asof></span>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <h2><span class="market-name">코스피</span> 지수 추이 <span class="badge">예시</span></h2>
+            <span class="sub">최근 20거래일 종가</span>
+          </div>
+          <div class="chart-box">
+            <canvas id="main-chart" role="img" aria-label="최근 20거래일 지수 종가 선 그래프"></canvas>
+            <div id="chart-tip" class="chart-tip"></div>
+          </div>
+          <div id="chart-stats" class="stat-row"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="container grid grid-2">
+        <div class="card">
+          <div class="section-head">
+            <h2><span class="market-name">코스피</span> 거래 요약 <span class="badge">예시</span></h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>항목</th><th>값</th></tr></thead>
+              <tbody id="summary-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-head">
+            <h2>투자자별 순매수 <span class="badge">예시</span></h2>
+            <span class="sub">단위: 억 원</span>
+          </div>
+          <div id="flows"></div>
+          <p class="status-meta" style="margin: 12px 0 0; font-size: .85rem;">가운데 선 기준 오른쪽(빨강)은 순매수, 왼쪽(파랑)은 순매도입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="card">
+          <div class="section-head">
+            <h2>업종별 등락률 <span class="badge">예시</span></h2>
+            <span class="sub">색이 진할수록 변동 폭이 큽니다</span>
+          </div>
+          <div id="heatmap" class="heatmap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="container split">
+        <div>
+          <h2>시황을 볼 때 함께 살펴볼 것</h2>
+          <ul>
+            <li><strong>환율</strong> · 원화 약세(환율 상승)는 외국인 매도 요인이 되기 쉽습니다.</li>
+            <li><strong>미국 증시</strong> · 전날 밤 뉴욕 증시 흐름이 국내 장 초반에 반영됩니다.</li>
+            <li><strong>반도체 업황</strong> · 코스피 시가총액에서 반도체 비중이 커 지수 방향에 큰 영향을 줍니다.</li>
+            <li><strong>수급 주체</strong> · 외국인·기관의 연속 순매수 여부는 추세 판단에 참고가 됩니다.</li>
+          </ul>
+          <a class="btn" href="guide.html">용어 정리 보러 가기 →</a>
+        </div>
+        <img src="images/seoul-night.jpg" alt="네온사인이 켜진 서울 도심 밤거리" loading="lazy">
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong>K-마켓 브리핑</strong> · 한국 주식시장 시황 정보 사이트</p>
+      <p>본 사이트의 모든 수치는 예시 데이터이며, 특정 종목의 매수·매도를 권유하지 않습니다. 투자에 대한 판단과 책임은 투자자 본인에게 있습니다.</p>
+      <p>이미지 출처: <a href="https://unsplash.com/license" target="_blank" rel="noopener">Unsplash (Unsplash License)</a></p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
